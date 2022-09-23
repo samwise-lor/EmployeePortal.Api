@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmployeePortal.Api.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,41 +20,86 @@ namespace EmployeePortal.Api.Repositories
 
         public List<Employee> GetEmployees()
         {
-            return _context.Employee.ToList();
+            try
+            {
+                return _context.Employee.ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Meaningful error after logging the error or complete exception can be thrown (e)
+                throw new InternalServerException($"An error occurred in processing the request");
+            }
         }
 
         public Employee GetEmployee(Guid employeeId)
         {
-            return _context.Employee.FirstOrDefault(x => x.Id == employeeId);
+            try
+            {
+                return _context.Employee.FirstOrDefault(x => x.Id == employeeId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Meaningful error after logging the error or complete exception can be thrown (e)
+                throw new InternalServerException($"An error occurred in processing the request {employeeId} ");
+            }
         }
 
         public Employee UpdateEmployee(Guid employeeId, Employee request)
         {
-            var existingEmployee = GetEmployee(employeeId);
-            if (existingEmployee == null) return null;
-            existingEmployee.FirstName = request.FirstName;
-            existingEmployee.LastName = request.LastName;
-            existingEmployee.Email = request.Email;
-            existingEmployee.Mobile = request.Mobile;
-            existingEmployee.Age = request.Age;
+            try
+            {
+                var existingEmployee = GetEmployee(employeeId);
+                if (existingEmployee == null) return null;
+                existingEmployee.FirstName = request.FirstName;
+                existingEmployee.LastName = request.LastName;
+                existingEmployee.Email = request.Email;
+                existingEmployee.Mobile = request.Mobile;
+                existingEmployee.Age = request.Age;
 
-            _context.SaveChanges();
-            return existingEmployee;
+                _context.SaveChanges();
+                return existingEmployee;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Meaningful error after logging the error or complete exception can be thrown (e)
+                throw new InternalServerException($"An error occurred in processing the request {employeeId} ");
+            }
         }
 
         public void DeleteEmployee(Guid employeeId)
         {
-            var employee = GetEmployee(employeeId);
-            if (employee == null) return;
-            _context.Employee.Remove(employee);
-            _context.SaveChanges();
+            try
+            {
+                var employee = GetEmployee(employeeId);
+                if (employee == null) return;
+                _context.Employee.Remove(employee);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Meaningful error after logging the error or complete exception can be thrown (e)
+                throw new InternalServerException($"An error occurred in processing the request {employeeId} ");
+            }
         }
 
         public Employee AddEmployee(Employee request)
         {
-            var employee = _context.Employee.Add(request);
-            _context.SaveChanges();
-            return employee.Entity;
+            try
+            {
+                var employee = _context.Employee.Add(request);
+                _context.SaveChanges();
+                return employee.Entity;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Meaningful error after logging the error or complete exception can be thrown (e)
+                throw new InternalServerException($"An error occurred in processing the request");
+            }
         }
 
         public bool Exists(Guid employeeId)
