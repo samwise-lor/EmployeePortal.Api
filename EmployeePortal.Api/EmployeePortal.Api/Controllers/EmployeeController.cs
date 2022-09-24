@@ -48,6 +48,19 @@ namespace EmployeePortal.Api.Controllers
             return Ok(_mapper.Map<Employee>(employee));
         }
         
+        /// <summary>
+        /// Returns a list of employees given a set of parameters
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("[controller]/Search")]
+        public IActionResult SearchEmployees([FromQuery] DomainModels.SearchEmployee request)
+        {
+            var employees =  _employeeRepository.SearchEmployee(_mapper.Map<DataModels.Employee>(request));
+            return Ok(_mapper.Map<List<Employee>>(employees));
+        }
+        
         /*
          * Options to return response are
          * Created()

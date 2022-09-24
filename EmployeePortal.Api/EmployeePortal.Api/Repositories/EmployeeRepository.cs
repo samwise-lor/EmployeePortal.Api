@@ -22,7 +22,7 @@ namespace EmployeePortal.Api.Repositories
         {
             try
             {
-                return _context.Employee.ToList();
+                return _context.Employee.Include(nameof(Address)).ToList();
             }
             catch (Exception e)
             {
@@ -36,7 +36,7 @@ namespace EmployeePortal.Api.Repositories
         {
             try
             {
-                return _context.Employee.FirstOrDefault(x => x.Id == employeeId);
+                return _context.Employee.Include(nameof(Address)).FirstOrDefault(x => x.Id == employeeId);
             }
             catch (Exception e)
             {
@@ -44,6 +44,25 @@ namespace EmployeePortal.Api.Repositories
                 //Meaningful error after logging the error or complete exception can be thrown (e)
                 throw new InternalServerException($"An error occurred in processing the request {employeeId} ");
             }
+        }
+        
+        public List<Employee> SearchEmployee(Employee request)
+        {
+            var employees = GetEmployees();
+            if (!string.IsNullOrEmpty(request.FirstName))
+            {
+                employees = employees.Where(x => string.Equals(x.FirstName, request.FirstName, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
+            if (!string.IsNullOrEmpty(request.LastName))
+            {
+                employees = employees.Where(x => string.Equals(x.LastName, request.LastName, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
+            if (!string.IsNullOrEmpty(request.Email))
+            {
+                employees = employees.Where(x => string.Equals(x.Email, request.Email, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
+            
+            return employees;
         }
 
         public Employee UpdateEmployee(Guid employeeId, Employee request)

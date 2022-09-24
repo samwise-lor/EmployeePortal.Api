@@ -9,6 +9,7 @@ namespace EmployeePortal.Api.Repositories
     {
         List<Employee> GetEmployees();
         Employee GetEmployee(Guid employeeId);
+        List<Employee> SearchEmployee(Employee request);
         Employee UpdateEmployee(Guid employeeId, Employee request);
         void DeleteEmployee(Guid employeeId);
         Employee AddEmployee(Employee request);

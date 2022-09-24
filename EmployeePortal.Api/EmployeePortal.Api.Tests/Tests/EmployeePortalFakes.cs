@@ -72,6 +72,11 @@ namespace EmployeePortal.Api.Tests.Tests
             existing.Age = request.Age;
             return existing;
         }
+        
+        public List<Employee> SearchEmployee(Employee request)
+        {
+            return _employees;
+        }
 
         public void DeleteEmployee(Guid employeeId)
         {
