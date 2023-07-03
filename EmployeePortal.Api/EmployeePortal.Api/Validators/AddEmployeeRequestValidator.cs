@@ -14,6 +14,8 @@ namespace EmployeePortal.Api.Validators
                 .EmailAddress().WithMessage("A valid email is required");
             RuleFor(x => x.Mobile).GreaterThan(99999).LessThan(10000000000).WithMessage("Phone number must between 5-10 number");
             RuleFor(x => x.Age).GreaterThan(0).LessThan(150).WithMessage("Age must between 1-150 number");
+            RuleFor(x => x.PhysicalAddress).NotEmpty();
+            RuleFor(x => x.PostalAddress).NotEmpty();
         }
     }
 }
