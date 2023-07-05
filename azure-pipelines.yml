@@ -18,7 +18,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build' 
-    projects: 'EmployeePortal.Api/EmployeePortal.Api/EmployeePortal.Api.csproj'
+    projects: 'EmployeePortal.Api/EmployeePortal.Api.csproj'
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerConnection'
